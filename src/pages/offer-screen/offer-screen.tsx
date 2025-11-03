@@ -302,6 +302,8 @@ export default function OfferScreen(): JSX.Element {
             </h2>
             <div className="near-places__list places__list">
               <OfferList offers={offers.filter((offer) => offer.id !== foundOffer.id)}
+                selectedOffer={foundOffer}
+                setSelectedOffer={() => {}}
                 page={'near-places'}
                 width={260}
                 height={200}

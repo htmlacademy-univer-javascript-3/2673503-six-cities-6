@@ -16,8 +16,8 @@ export const offers: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 43,
-        longitude: 53,
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
         zoom: 8,
       }
     }
@@ -37,8 +37,8 @@ export const offers: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 43,
-        longitude: 53,
+        latitude: 52.3609553943508,
+        longitude: 4.85309666406198,
         zoom: 8,
       }
     }
@@ -56,10 +56,10 @@ export const offers: Offer[] = [
     bedrooms: 6,
     maxAdults: 5,
     city: {
-      name: 'Cologne',
+      name: 'Amsterdam',
       location: {
-        latitude: 43,
-        longitude: 53,
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
         zoom: 8,
       }
     }
@@ -77,10 +77,10 @@ export const offers: Offer[] = [
     bedrooms: 13,
     maxAdults: 10,
     city: {
-      name: 'Cologne',
+      name: 'Amsterdam',
       location: {
-        latitude: 43,
-        longitude: 53,
+        latitude: 52.3809553943508,
+        longitude: 4.939309666406198,
         zoom: 8,
       }
     }
