@@ -1,12 +1,15 @@
 ﻿import {Offer} from '@/api/types.ts';
 import Header from '@/components/header/header.tsx';
 import OfferList from '@/components/offer-list/offer-list.tsx';
+import Map from "@/components/map/map.tsx";
+import {useState} from "react";
 
 interface MainScreenProps {
   offers: Offer[];
 }
 
 export default function MainScreen({offers}: MainScreenProps): JSX.Element {
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -80,11 +83,14 @@ export default function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={offers} page={'cities'} width={260} height={200}/>
+                <OfferList offers={offers}
+                           selectedOffer={selectedOffer}
+                           setSelectedOffer={setSelectedOffer}
+                           page={'cities'} width={260} height={200}/>
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"/>
+              <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
             </div>
           </div>
         </div>
