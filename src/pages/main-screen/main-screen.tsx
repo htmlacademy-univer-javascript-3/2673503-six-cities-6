@@ -91,7 +91,9 @@ export default function MainScreen({offers}: MainScreenProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
+              <section className="cities__map map">
+                <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
+              </section>
             </div>
           </div>
         </div>
