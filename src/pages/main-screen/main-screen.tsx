@@ -1,12 +1,12 @@
-﻿import {PlaceOffer} from '@/api/types.ts';
-import PlaceCard from '@/components/place-card/place-card.tsx';
+﻿import {Offer} from '@/api/types.ts';
 import Header from '@/components/header/header.tsx';
+import OfferList from '@/components/offer-list/offer-list.tsx';
 
 interface MainScreenProps {
-  placeOffers: PlaceOffer[];
+  offers: Offer[];
 }
 
-export default function MainScreen({placeOffers}: MainScreenProps): JSX.Element {
+export default function MainScreen({offers}: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -80,7 +80,7 @@ export default function MainScreen({placeOffers}: MainScreenProps): JSX.Element 
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {placeOffers.map((p) => <PlaceCard {...p} key={p.id}/>)}
+                <OfferList offers={offers} page={'cities'} width={260} height={200}/>
               </div>
             </section>
             <div className="cities__right-section">

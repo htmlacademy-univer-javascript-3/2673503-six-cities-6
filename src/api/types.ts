@@ -1,15 +1,30 @@
-﻿export enum PlaceType {
+﻿export enum OfferType {
     Apartment = 'Apartment',
     Room = 'Room'
 }
 
-export type PlaceOffer = {
+export type Offer = {
     id: string;
-    type: PlaceType;
+    type: OfferType;
     isFavorite: boolean;
     isPremium: boolean;
     price: number;
     rating: number;
     title: string;
     previewImage: string;
+    description: string;
+    bedrooms: number;
+    maxAdults: number;
+    city: City;
+};
+
+export type Location = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+export type City = {
+  name: string;
+  location: Location;
 };
