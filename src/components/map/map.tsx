@@ -1,4 +1,5 @@
 ﻿import {City, Offer} from '@/api/types.ts';
+import 'leaflet/dist/leaflet.css';
 import {Icon, layerGroup, Marker} from 'leaflet';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '@/constants/url-markers.ts';
 import {useEffect, useRef} from 'react';
@@ -31,8 +32,8 @@ export default function Map(props: MapProps): JSX.Element {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: city.location.latitude,
-          lng: city.location.longitude
+          lat: offer.city.location.latitude,
+          lng: offer.city.location.longitude
         });
         marker
           .setIcon(
@@ -47,5 +48,5 @@ export default function Map(props: MapProps): JSX.Element {
       };
     }
   }, [map, offers, selectedOffer]);
-  return <div className="cities__map map" style={{height: '500px'}} ref={mapRef}></div>;
+  return <div style={{height: '100%', width: '100%'}} ref={mapRef}></div>;
 }
