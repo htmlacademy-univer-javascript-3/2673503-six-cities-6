@@ -19,7 +19,7 @@ export default function App(): JSX.Element {
             <Route path=':id' element={<OfferScreen/>}/>
           </Route>
           <Route path={AppRoute.Favorites} element={
-            <PrivateRoute hasAccess>
+            <PrivateRoute>
               <FavoritesScreen/>
             </PrivateRoute>
           }

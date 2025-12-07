@@ -22,6 +22,26 @@ export function groupBy<TSource, TValue>(
   return groupedResults;
 }
 
+export function validatePassword(str: string): string | undefined {
+  const whiteSpaceRegex = /\s+/gm;
+  const numberRegex = /\d+/gm;
+  const wordCharacterRegex = /\D+/gm;
+
+  if (whiteSpaceRegex.test(str)) {
+    return 'Password must not contain whitespace';
+  }
+
+  if (!numberRegex.test(str) || !wordCharacterRegex.test(str)) {
+    return 'Password have no letter or number';
+  }
+
+  return undefined;
+}
+
+export function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export function getOfferCompare(sortOption: SortOption) {
   switch (sortOption) {
     case SortOption.Default:

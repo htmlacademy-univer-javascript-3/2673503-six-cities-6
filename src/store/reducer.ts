@@ -1,14 +1,24 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {setCity, setOffers, setSelectedOffer, setSortOption} from '@/store/action.ts';
+import {
+  requireAuthorization,
+  setCity,
+  loadOffers,
+  setSelectedOffer,
+  setSortOption,
+  setOffersDataLoadingStatus
+} from '@/store/action.ts';
 import {cities} from '@/constants/cities.ts';
 import {AppState} from '@/types/state.ts';
 import {SortOption} from '@/types/sort-option.ts';
+import {AuthorizationStatus} from '@/constants/auth-status.ts';
 
 const initialState: AppState = {
-  city: cities[5],
-  offers: undefined,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  city: cities[0],
+  offers: [],
   sortOption: SortOption.Default,
   selectedOffer: undefined,
+  isOffersDataLoading: false,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -16,7 +26,7 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(setCity, (state, action) => {
       state.city = action.payload.city;
     })
-    .addCase(setOffers, (state, action) => {
+    .addCase(loadOffers, (state, action) => {
       state.offers = action.payload.offers;
     })
     .addCase(setSortOption, (state, action) => {
@@ -24,5 +34,11 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSelectedOffer, (state, action) => {
       state.selectedOffer = action.payload.selectedOffer;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });

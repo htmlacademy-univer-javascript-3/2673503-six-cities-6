@@ -1,5 +1,5 @@
-import {Offer} from '@/api/types';
 import OfferList from '@/components/offer-list/offer-list.tsx';
+import {Offer} from '@/types/api.ts';
 
 interface NearbyOfferListProps {
   nearbyOffers: Offer[];

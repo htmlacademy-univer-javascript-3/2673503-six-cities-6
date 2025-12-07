@@ -1,7 +1,4 @@
-export enum OfferType {
-  Apartment = 'Apartment',
-  Room = 'Room'
-}
+type OfferType = string;
 
 export type Offer = {
   id: string;

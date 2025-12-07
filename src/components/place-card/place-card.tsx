@@ -1,6 +1,7 @@
 ﻿import {Link} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
 import {Offer} from '@/types/api.ts';
+import {capitalize} from '@/utils/utils.ts';
 
 export interface PlaceCardProps {
   offer: Offer;
@@ -60,7 +61,7 @@ export default function PlaceCard({offer, page, width, height} : PlaceCardProps)
             {offer.title}
           </Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{capitalize(offer.type)}</p>
       </div>
     </article>);
 }
