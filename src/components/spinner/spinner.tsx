@@ -1,4 +1,4 @@
-import {SPINNER_URL} from '@/constants/api-settings.ts';
+import {SPINNER_URL} from '@/constants/settings.ts';
 
 export default function Spinner() {
   return (

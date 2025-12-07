@@ -52,7 +52,7 @@ export default function PlaceCard({offer, page, width, height} : PlaceCardProps)
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${offer.rating * 100 / 5}%`}}/>
+            <span style={{width: `${Math.round(offer.rating) * 100 / 5}%`}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

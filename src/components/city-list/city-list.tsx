@@ -1,7 +1,7 @@
-import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
-import {useAppDispatch} from '@/components/hooks/use-app-dispatch.tsx';
 import {setCity} from '@/store/action.ts';
 import {City} from '@/types/api.ts';
+import {useAppSelector} from '@/hooks/use-app-selector.tsx';
+import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
 
 export interface CityListProps {
   cities: City[];

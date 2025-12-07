@@ -2,8 +2,8 @@
 import {Icon, layerGroup, Marker} from 'leaflet';
 import {URL_PIN_ACTIVE, URL_PIN} from '@/constants/url-markers.ts';
 import {useEffect, useRef} from 'react';
-import useMap from '@/components/hooks/use-map.tsx';
 import {Location, Offer} from '@/types/api.ts';
+import useMap from '@/hooks/use-map.tsx';
 
 interface MapProps {
   location: Location;

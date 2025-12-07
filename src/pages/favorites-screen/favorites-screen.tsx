@@ -1,24 +1,24 @@
 import Footer from '@/components/footer/footer.tsx';
 import Header from '@/components/header/header.tsx';
-import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
 import EmptyFavoriteOfferList from '@/components/empty-favorite-offer-list/empty-favorite-offer-list.tsx';
 import FavoriteOfferList from '@/components/favorite-offer-list/favorite-offer-list.tsx';
 import Spinner from '@/components/spinner/spinner.tsx';
+import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 
 export default function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const isOfferListEmpty = !isOffersDataLoading && offers.length === 0;
+  const favoriteOffers = useAppSelector((state) => state.offers).filter((offer) => offer.isFavorite);
+  const isLoading = useAppSelector((state) => state.isLoading);
+  const offerListEmpty = !isLoading && favoriteOffers.length === 0;
 
   return (
-    <div className={`page ${isOfferListEmpty && 'page--favorites-empty'}`}>
+    <div className={`page ${offerListEmpty && 'page--favorites-empty'}`}>
       <Header/>
-      {isOffersDataLoading ? <Spinner/> :
-        <main className={`page__main page__main--favorites ${isOfferListEmpty && 'page__main--favorites-empty'}`}>
+      {isLoading ? <Spinner/> :
+        <main className={`page__main page__main--favorites ${offerListEmpty && 'page__main--favorites-empty'}`}>
           <div className="page__favorites-container container">
-            {isOfferListEmpty
+            {offerListEmpty
               ? <EmptyFavoriteOfferList/>
-              : <FavoriteOfferList offers={offers}/>}
+              : <FavoriteOfferList offers={favoriteOffers}/>}
           </div>
         </main>}
       <Footer/>
