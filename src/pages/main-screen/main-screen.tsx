@@ -5,13 +5,15 @@ import EmptyMainOfferList from '@/components/empty-main-offer-list/empty-main-of
 import Spinner from '@/components/spinner/spinner.tsx';
 import {cities} from '@/constants/cities.ts';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
+import {getCity, getSelectedOffer, getSortOption} from '@/store/app-data/selectors.ts';
+import {getMainOffers, getMainOffersIsLoading} from '@/store/main-offers/selectors.ts';
 
 export default function MainScreen(): JSX.Element {
-  const city = useAppSelector((state) => state.city);
-  const sortOption = useAppSelector((state) => state.sortOption);
-  const selectedOffer = useAppSelector((state) => state.selectedOffer);
-  const offers = useAppSelector((state) => state.offers);
-  const isLoading = useAppSelector((state) => state.isLoading);
+  const city = useAppSelector(getCity);
+  const sortOption = useAppSelector(getSortOption);
+  const selectedOffer = useAppSelector(getSelectedOffer);
+  const offers = useAppSelector(getMainOffers);
+  const isLoading = useAppSelector(getMainOffersIsLoading);
 
   return (
     <div className="page page--gray page--main">

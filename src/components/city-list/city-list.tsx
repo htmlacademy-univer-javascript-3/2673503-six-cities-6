@@ -1,18 +1,20 @@
-import {setCity} from '@/store/action.ts';
 import {City} from '@/types/api.ts';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
+import {memo} from 'react';
+import {getCity} from '@/store/app-data/selectors.ts';
+import {setCity} from '@/store/app-data/app-data.ts';
 
 export interface CityListProps {
   cities: City[];
 }
 
-export default function CityList({cities}: CityListProps) {
-  const currentCity = useAppSelector((state) => state.city);
+function CityList({cities}: CityListProps) {
+  const currentCity = useAppSelector(getCity);
   const dispatch = useAppDispatch();
 
   const handleCityChoose = (city: City) => {
-    dispatch(setCity({city: city}));
+    dispatch(setCity(city));
   };
 
   return (
@@ -31,3 +33,6 @@ export default function CityList({cities}: CityListProps) {
       </ul>
     </section>);
 }
+
+const MemoizedCityList = memo(CityList, (prevProps, nextProps) => prevProps.cities.map((city) => city.name).join() === nextProps.cities.map((city) => city.name).join());
+export default MemoizedCityList;

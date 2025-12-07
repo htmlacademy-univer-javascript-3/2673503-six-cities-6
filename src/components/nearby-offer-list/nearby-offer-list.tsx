@@ -1,12 +1,13 @@
 import OfferList from '@/components/offer-list/offer-list.tsx';
 import {Offer} from '@/types/api.ts';
 import {MAX_NEARBY_OFFERS_COUNT} from '@/constants/settings.ts';
+import {memo} from 'react';
 
 interface NearbyOfferListProps {
   nearbyOffers: Offer[];
 }
 
-export default function NearbyOfferList({nearbyOffers}: NearbyOfferListProps) {
+function NearbyOfferList({nearbyOffers}: NearbyOfferListProps) {
   return (
     <div className="container">
       <section className="near-places places">
@@ -19,3 +20,6 @@ export default function NearbyOfferList({nearbyOffers}: NearbyOfferListProps) {
       </section>
     </div>);
 }
+
+const MemoizedNearbyOfferList = memo(NearbyOfferList);
+export default MemoizedNearbyOfferList;

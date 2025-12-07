@@ -1,17 +1,18 @@
 ﻿import PlaceCard from '@/components/place-card/place-card.tsx';
-import {setSelectedOffer} from '@/store/action.ts';
 import {Offer} from '@/types/api.ts';
 import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
+import {memo} from 'react';
+import {setSelectedOffer} from '@/store/app-data/app-data.ts';
 
 export interface OfferListProps {
   offers: Offer[];
   page: string;
 }
 
-export default function OfferList({offers, page}: OfferListProps) {
+function OfferList({offers, page}: OfferListProps) {
   const dispatch = useAppDispatch();
   const handleOfferUpdate = (offer: Offer | undefined) => {
-    dispatch(setSelectedOffer({selectedOffer: offer}));
+    dispatch(setSelectedOffer(offer));
   };
   return (
     <>
@@ -25,3 +26,6 @@ export default function OfferList({offers, page}: OfferListProps) {
       ))}
     </>);
 }
+
+const MemoizedOfferList = memo(OfferList);
+export default MemoizedOfferList;

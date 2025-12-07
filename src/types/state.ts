@@ -1,21 +1,36 @@
 import {store} from '@/store';
 import {SortOption} from '@/types/sort-option.ts';
-import {City, Comment, Email, Offer, Url} from '@/types/api.ts';
+import {City, Comment, Offer, User} from '@/types/api.ts';
 import {AuthorizationStatus} from '@/constants/auth-status.ts';
 
-export type AppState = {
-  authorizationStatus: AuthorizationStatus;
+export type State = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+
+export type AppData = {
   city: City;
-  offers: Offer[];
   sortOption: SortOption;
   selectedOffer: Offer | undefined;
-  isLoading: boolean;
-  offerNotFound: boolean;
-  offer: Offer;
+};
+
+export type AppUser = Omit<User, 'isPro' | 'name'> & {
+  authorizationStatus: AuthorizationStatus;
+};
+
+export type ChosenOffer = {
+  offer: Offer | undefined;
   nearbyOffers: Offer[];
   comments: Comment[];
-  email: Email | undefined;
-  avatarUrl: Url | undefined;
-  errorPostingComment: string | undefined;
+  notFound: boolean;
+  isLoading: boolean;
 };
-export type AppDispatch = typeof store.dispatch;
+
+export type MainOffers = {
+  mainOffers: Offer[];
+  isLoading: boolean;
+};
+
+export type FavoriteOffers = {
+  favoriteOffers: Offer[];
+  isLoading: boolean;
+};

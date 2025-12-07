@@ -1,8 +1,10 @@
+import {memo} from 'react';
+
 interface OfferImageProps {
   src: string;
 }
 
-export default function OfferImage({src}: OfferImageProps) {
+function OfferImage({src}: OfferImageProps) {
   return (
     <div className="offer__image-wrapper">
       <img
@@ -13,3 +15,6 @@ export default function OfferImage({src}: OfferImageProps) {
     </div>
   );
 }
+
+const MemoizedOfferImage = memo(OfferImage);
+export default MemoizedOfferImage;

@@ -1,11 +1,12 @@
 ﻿import {Comment} from '@/types/api.ts';
 import {formatDate} from '@/utils/utils.ts';
+import {memo} from 'react';
 
 interface ReviewProps {
   comment: Comment;
 }
 
-export default function Review({comment}: ReviewProps) {
+function Review({comment}: ReviewProps) {
   const date = new Date(Date.parse(comment.date));
   return (
     <>
@@ -37,3 +38,6 @@ export default function Review({comment}: ReviewProps) {
       </div>
     </>);
 }
+
+const MemoizedReview = memo(Review);
+export default MemoizedReview;

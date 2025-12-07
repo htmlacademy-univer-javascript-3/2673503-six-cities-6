@@ -2,12 +2,13 @@
 import {Comment} from '@/types/api.ts';
 import {compareComments} from '@/utils/utils.ts';
 import {MAX_REVIEWS_COUNT} from '@/constants/settings.ts';
+import {memo} from 'react';
 
 interface ReviewListProps {
   comments: Comment[];
 }
 
-export default function ReviewList({comments}: ReviewListProps) {
+function ReviewList({comments}: ReviewListProps) {
   return (
     <ul className="reviews__list">
       {comments
@@ -20,3 +21,6 @@ export default function ReviewList({comments}: ReviewListProps) {
     </ul>
   );
 }
+
+const MemoizedReviewList = memo(ReviewList);
+export default MemoizedReviewList;

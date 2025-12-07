@@ -7,9 +7,10 @@ import {loginAction} from '@/store/api-actions.ts';
 import {validatePassword} from '@/utils/utils.ts';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
+import {getAuthorizationStatus} from '@/store/app-user/selectors.ts';
 
 export default function LoginScreen(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);

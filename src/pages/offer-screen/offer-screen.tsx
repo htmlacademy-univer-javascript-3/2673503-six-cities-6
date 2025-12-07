@@ -11,6 +11,8 @@ import {capitalize} from '@/utils/utils.ts';
 import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 import ReviewSection from '@/components/review-section/review-section.tsx';
+import {MAX_OFFER_IMAGES_COUNT} from '@/constants/settings.ts';
+import {getChosenOffer} from '@/store/chosen-offer/selectors.ts';
 
 export default function OfferScreen(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -22,42 +24,38 @@ export default function OfferScreen(): JSX.Element {
     }
   }, [dispatch, id]);
 
-  const isLoading = useAppSelector((state) => state.isLoading);
-  const offerNotFound = useAppSelector((state) => state.offerNotFound);
+  const {offer, nearbyOffers, comments, isLoading, notFound} = useAppSelector(getChosenOffer);
 
-  const foundOffer = useAppSelector((state) => state.offer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0, 3);
-  const comments = useAppSelector((state) => state.comments);
-
-  if (offerNotFound) {
+  if (notFound) {
     return <NotFoundScreen/>;
   }
 
   return (
     <div className="page">
       <Header/>
-      {isLoading || !foundOffer ? <Spinner/> :
+      {isLoading || !offer ? <Spinner/> :
         <main className="page__main page__main--offer">
           <section className="offer">
             <div className="offer__gallery-container container">
               <div className="offer__gallery">
-                {foundOffer.images.slice(0, 6).map((image) => <OfferImage key={foundOffer.id + image} src={image}/>)}
+                {offer.images.slice(0, MAX_OFFER_IMAGES_COUNT).map((image) =>
+                  <OfferImage key={offer.id + image} src={image}/>)}
               </div>
             </div>
             <div className="offer__container container">
               <div className="offer__wrapper">
-                {foundOffer.isPremium &&
+                {offer.isPremium &&
                   <div className="offer__mark">
                     <span>Premium</span>
                   </div>}
                 <div className="offer__name-wrapper">
                   <h1 className="offer__name">
-                    {foundOffer.title}
+                    {offer.title}
                   </h1>
                   <button
-                    className={`offer__bookmark-button ${foundOffer.isFavorite && 'offer__bookmark-button--active'} button`}
+                    className={`offer__bookmark-button ${offer.isFavorite && 'offer__bookmark-button--active'} button`}
                     type="button"
-                    style={{top: foundOffer.isPremium ? 41 : 4}}
+                    style={{top: offer.isPremium ? 41 : 4}}
                   >
                     <svg className="offer__bookmark-icon" width={31} height={33}>
                       <use xlinkHref="#icon-bookmark"/>
@@ -67,53 +65,53 @@ export default function OfferScreen(): JSX.Element {
                 </div>
                 <div className="offer__rating rating">
                   <div className="offer__stars rating__stars">
-                    <span style={{width: `${Math.round(foundOffer.rating) * 100 / 5}%`}}/>
+                    <span style={{width: `${Math.round(offer.rating) * 100 / 5}%`}}/>
                     <span className="visually-hidden">Rating</span>
                   </div>
-                  <span className="offer__rating-value rating__value">{foundOffer.rating}</span>
+                  <span className="offer__rating-value rating__value">{offer.rating}</span>
                 </div>
                 <ul className="offer__features">
                   <li className="offer__feature offer__feature--entire">
-                    {capitalize(foundOffer.type)}
+                    {capitalize(offer.type)}
                   </li>
                   <li className="offer__feature offer__feature--bedrooms">
-                    {foundOffer.bedrooms} {`Bedroom${foundOffer.bedrooms > 1 ? 's' : ''}`}
+                    {offer.bedrooms} {`Bedroom${offer.bedrooms > 1 ? 's' : ''}`}
                   </li>
                   <li className="offer__feature offer__feature--adults">
-                    Max {foundOffer.maxAdults} {`adult${foundOffer.maxAdults > 1 ? 's' : ''}`}
+                    Max {offer.maxAdults} {`adult${offer.maxAdults > 1 ? 's' : ''}`}
                   </li>
                 </ul>
                 <div className="offer__price">
-                  <b className="offer__price-value">€{foundOffer.price}</b>
+                  <b className="offer__price-value">€{offer.price}</b>
                   <span className="offer__price-text">&nbsp;night</span>
                 </div>
                 <div className="offer__inside">
                   <h2 className="offer__inside-title">Whats inside</h2>
                   <ul className="offer__inside-list">
-                    {foundOffer.goods.map((good) =>
-                      <li className={'offer__inside-item'} key={foundOffer.id + good}>{good}</li>)}
+                    {offer.goods.map((good) =>
+                      <li className={'offer__inside-item'} key={offer.id + good}>{good}</li>)}
                   </ul>
                 </div>
                 <div className="offer__host">
                   <h2 className="offer__host-title">Meet the host</h2>
                   <div className="offer__host-user user">
                     <div
-                      className={`offer__avatar-wrapper user__avatar-wrapper ${(foundOffer.host.isPro && 'offer__avatar-wrapper--pro')}`}
+                      className={`offer__avatar-wrapper user__avatar-wrapper ${(offer.host.isPro && 'offer__avatar-wrapper--pro')}`}
                     >
                       <img
                         className="offer__avatar user__avatar"
-                        src={foundOffer.host.avatarUrl}
+                        src={offer.host.avatarUrl}
                         width={74}
                         height={74}
                         alt="Host avatar"
                       />
                     </div>
-                    <span className="offer__user-name">{foundOffer.host.name}</span>
-                    {foundOffer.host.isPro && <span className="offer__user-status">Pro</span>}
+                    <span className="offer__user-name">{offer.host.name}</span>
+                    {offer.host.isPro && <span className="offer__user-status">Pro</span>}
                   </div>
                   <div className="offer__description">
                     <p className="offer__text">
-                      {foundOffer.description}
+                      {offer.description}
                     </p>
                   </div>
                 </div>
@@ -121,8 +119,8 @@ export default function OfferScreen(): JSX.Element {
               </div>
             </div>
             <section className="offer__map map">
-              <Map location={foundOffer.city.location} offers={nearbyOffers.concat(foundOffer)}
-                selectedOffer={foundOffer}
+              <Map location={offer.city.location} offers={nearbyOffers.concat(offer)}
+                selectedOffer={offer}
               />
             </section>
           </section>

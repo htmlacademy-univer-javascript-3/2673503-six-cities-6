@@ -3,12 +3,13 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
 import PlaceCard from '@/components/place-card/place-card.tsx';
 import {groupBy} from '@/utils/utils.ts';
+import {memo} from 'react';
 
 interface GroupedFavoriteOffersProps {
   offers: Offer[];
 }
 
-export default function GroupedFavoriteOffers({offers}: GroupedFavoriteOffersProps) {
+function GroupedFavoriteOffers({offers}: GroupedFavoriteOffersProps) {
   const groupedCityOffers = groupBy(offers, (offer) => offer.city.name, (offer) => offer);
 
   return Object.keys(groupedCityOffers).map((city) => (
@@ -26,3 +27,6 @@ export default function GroupedFavoriteOffers({offers}: GroupedFavoriteOffersPro
       </div>
     </li>));
 }
+
+const MemoizedGroupedFavoriteOffers = memo(GroupedFavoriteOffers);
+export default MemoizedGroupedFavoriteOffers;

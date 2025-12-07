@@ -2,6 +2,7 @@
 import {AppRoute} from '@/constants/app-routes.ts';
 import {Offer} from '@/types/api.ts';
 import {capitalize} from '@/utils/utils.ts';
+import {memo} from 'react';
 
 export interface PlaceCardProps {
   offer: Offer;
@@ -10,7 +11,7 @@ export interface PlaceCardProps {
   height: number;
 }
 
-export default function PlaceCard({offer, page, width, height} : PlaceCardProps): JSX.Element {
+function PlaceCard({offer, page, width, height}: PlaceCardProps): JSX.Element {
   return (
     <article className={`${page}__card place-card`}>
       {offer.isPremium &&
@@ -65,3 +66,6 @@ export default function PlaceCard({offer, page, width, height} : PlaceCardProps)
       </div>
     </article>);
 }
+
+const MemoizedPlaceCard = memo(PlaceCard);
+export default MemoizedPlaceCard;

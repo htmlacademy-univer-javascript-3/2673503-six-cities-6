@@ -1,7 +1,8 @@
 import {Link} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
+import {memo} from 'react';
 
-export default function NavigationBarNotLogged() {
+function NavigationBarNotLogged() {
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
@@ -15,3 +16,6 @@ export default function NavigationBarNotLogged() {
       </ul>
     </nav>);
 }
+
+const MemoizedNavigationBarNotLogged = memo(NavigationBarNotLogged);
+export default MemoizedNavigationBarNotLogged;

@@ -1,4 +1,6 @@
-export default function EmptyFavoriteOfferList() {
+import {memo} from 'react';
+
+function EmptyFavoriteOfferList() {
   return (
     <section className="favorites favorites--empty">
       <h1 className="visually-hidden">Favorites (empty)</h1>
@@ -10,3 +12,6 @@ export default function EmptyFavoriteOfferList() {
       </div>
     </section>);
 }
+
+const MemoizedEmptyFavoriteOfferList = memo(EmptyFavoriteOfferList);
+export default MemoizedEmptyFavoriteOfferList;
