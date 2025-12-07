@@ -13,7 +13,7 @@ export default function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root}>
-          <Route index element={<MainScreen offers={offers}/>}/>
+          <Route index element={<MainScreen/>}/>
           <Route path={AppRoute.Login} element={<LoginScreen/>}/>
           <Route path={AppRoute.Offer}>
             <Route index element={<OfferScreen/>}/>

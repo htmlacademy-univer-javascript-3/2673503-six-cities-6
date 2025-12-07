@@ -3,12 +3,13 @@ import Header from '@/components/header/header.tsx';
 import OfferList from '@/components/offer-list/offer-list.tsx';
 import Map from '@/components/map/map.tsx';
 import {useState} from 'react';
+import CityList from '@/components/city-list/city-list.tsx';
+import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
+import {cities} from '@/mocks/cities.ts';
 
-interface MainScreenProps {
-  offers: Offer[];
-}
-
-export default function MainScreen({offers}: MainScreenProps): JSX.Element {
+export default function MainScreen(): JSX.Element {
+  const currentCity = useAppSelector((state) => state.city);
+  const currentOffers = useAppSelector((state) => state.offers);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
   return (
     <div className="page page--gray page--main">
@@ -16,46 +17,13 @@ export default function MainScreen({offers}: MainScreenProps): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
+          <CityList cities={cities}/>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -83,7 +51,7 @@ export default function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={offers}
+                <OfferList offers={currentOffers}
                   selectedOffer={selectedOffer}
                   setSelectedOffer={setSelectedOffer}
                   page={'cities'} width={260} height={200}
@@ -92,7 +60,7 @@ export default function MainScreen({offers}: MainScreenProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
+                <Map city={currentCity} offers={currentOffers} selectedOffer={selectedOffer}/>
               </section>
             </div>
           </div>
