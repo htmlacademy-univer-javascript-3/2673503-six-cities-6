@@ -1,8 +1,18 @@
-﻿import {Link} from 'react-router-dom';
+﻿import {Link, useNavigate} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
 import {Offer} from '@/types/api.ts';
 import {capitalize} from '@/utils/utils.ts';
 import {memo} from 'react';
+import {AuthorizationStatus} from '@/constants/auth-status.ts';
+import {
+  fetchFavoriteOffersAction,
+  fetchOfferAction,
+  fetchOffersAction,
+  postSwitchFavoriteStatus
+} from '@/store/api-actions.ts';
+import {useAppSelector} from '@/hooks/use-app-selector.tsx';
+import {getAuthorizationStatus} from '@/store/app-user/selectors.ts';
+import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
 
 export interface PlaceCardProps {
   offer: Offer;
@@ -12,6 +22,23 @@ export interface PlaceCardProps {
 }
 
 function PlaceCard({offer, page, width, height}: PlaceCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const navigate = useNavigate();
+
+  const handleSwitchFavoriteStatus = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+    dispatch(postSwitchFavoriteStatus(offer)).then(() => {
+      dispatch(fetchOffersAction());
+      dispatch(fetchOfferAction({offerId: offer.id}));
+      dispatch(fetchFavoriteOffersAction());
+    });
+  };
+
   return (
     <article className={`${page}__card place-card`}>
       {offer.isPremium &&
@@ -40,6 +67,7 @@ function PlaceCard({offer, page, width, height}: PlaceCardProps): JSX.Element {
           <button
             className={`place-card__bookmark-button${offer.isFavorite && '--active'} button`}
             type="button"
+            onClick={handleSwitchFavoriteStatus}
           >
             <svg
               className="place-card__bookmark-icon"

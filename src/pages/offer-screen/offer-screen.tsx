@@ -1,10 +1,15 @@
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import NotFoundScreen from '@/pages/not-found-screen/not-found-screen.tsx';
 import Header from '@/components/header/header.tsx';
 import Map from '@/components/map/map.tsx';
 import NearbyOfferList from '@/components/nearby-offer-list/nearby-offer-list.tsx';
 import {useEffect} from 'react';
-import {fetchOfferAction} from '@/store/api-actions.ts';
+import {
+  fetchFavoriteOffersAction,
+  fetchOfferAction,
+  fetchOffersAction,
+  postSwitchFavoriteStatus
+} from '@/store/api-actions.ts';
 import Spinner from '@/components/spinner/spinner.tsx';
 import OfferImage from '@/components/offer-image/offer-image.tsx';
 import {capitalize} from '@/utils/utils.ts';
@@ -13,10 +18,18 @@ import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 import ReviewSection from '@/components/review-section/review-section.tsx';
 import {MAX_OFFER_IMAGES_COUNT} from '@/constants/settings.ts';
 import {getChosenOffer} from '@/store/chosen-offer/selectors.ts';
+import {getAuthorizationStatus} from '@/store/app-user/selectors.ts';
+import {AppRoute} from '@/constants/app-routes.ts';
+import {AuthorizationStatus} from '@/constants/auth-status.ts';
 
 export default function OfferScreen(): JSX.Element {
-  const dispatch = useAppDispatch();
   const {id} = useParams();
+
+  const dispatch = useAppDispatch();
+
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const navigate = useNavigate();
+  const {offer, nearbyOffers, comments, isLoading, notFound} = useAppSelector(getChosenOffer);
 
   useEffect(() => {
     if (id) {
@@ -24,7 +37,17 @@ export default function OfferScreen(): JSX.Element {
     }
   }, [dispatch, id]);
 
-  const {offer, nearbyOffers, comments, isLoading, notFound} = useAppSelector(getChosenOffer);
+  const handleSwitchFavoriteStatus = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+    dispatch(postSwitchFavoriteStatus(offer!)).then(() => {
+      dispatch(fetchOffersAction());
+      dispatch(fetchOfferAction({offerId: id!}));
+      dispatch(fetchFavoriteOffersAction());
+    });
+  };
 
   if (notFound) {
     return <NotFoundScreen/>;
@@ -53,6 +76,7 @@ export default function OfferScreen(): JSX.Element {
                     {offer.title}
                   </h1>
                   <button
+                    onClick={handleSwitchFavoriteStatus}
                     className={`offer__bookmark-button ${offer.isFavorite && 'offer__bookmark-button--active'} button`}
                     type="button"
                     style={{top: offer.isPremium ? 41 : 4}}
