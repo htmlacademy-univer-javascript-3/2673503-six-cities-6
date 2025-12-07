@@ -1,5 +1,5 @@
-﻿import {SortOption} from '@/constants/sort-option.ts';
-import {Offer} from '@/api/types.ts';
+﻿import {SortOption} from '@/types/sort-option.ts';
+import {Offer} from '@/types/api.ts';
 
 export function groupBy<TSource, TValue>(
   source: TSource[],
@@ -22,7 +22,7 @@ export function groupBy<TSource, TValue>(
   return groupedResults;
 }
 
-export function GetOfferComparer(sortOption: SortOption) {
+export function getOfferCompare(sortOption: SortOption) {
   switch (sortOption) {
     case SortOption.Default:
       return undefined;

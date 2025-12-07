@@ -1,6 +1,6 @@
 import {createAction} from '@reduxjs/toolkit';
-import {City, Offer} from '@/api/types.ts';
-import {SortOption} from '@/constants/sort-option.ts';
+import {City, Offer} from '@/types/api.ts';
+import {SortOption} from '@/types/sort-option.ts';
 
 export const setOffers = createAction<{ offers: Offer[] }>('setOffers');
 export const setCity = createAction<{ city: City }>('setCity');

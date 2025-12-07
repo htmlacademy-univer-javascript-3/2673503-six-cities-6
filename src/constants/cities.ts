@@ -1,4 +1,4 @@
-import {City} from '@/api/types.ts';
+import {City} from '@/types/api.ts';
 
 export const cities: City[] = [
   {
@@ -6,7 +6,7 @@ export const cities: City[] = [
     location: {
       latitude: 52.370228,
       longitude: 4.902137,
-      zoom: 11
+      zoom: 13
     }
   },
   {
@@ -14,7 +14,7 @@ export const cities: City[] = [
     location: {
       latitude: 50.850346,
       longitude: 4.351721,
-      zoom: 11
+      zoom: 13
     }
   },
   {
@@ -22,7 +22,7 @@ export const cities: City[] = [
     location: {
       latitude: 50.937531,
       longitude: 6.960279,
-      zoom: 11
+      zoom: 13
     }
   },
   {
@@ -30,7 +30,7 @@ export const cities: City[] = [
     location: {
       latitude: 51.227741,
       longitude: 6.773456,
-      zoom: 11
+      zoom: 13
     }
   },
   {
@@ -38,7 +38,7 @@ export const cities: City[] = [
     location: {
       latitude: 53.551086,
       longitude: 9.993682,
-      zoom: 11
+      zoom: 13
     }
   },
   {
@@ -46,7 +46,7 @@ export const cities: City[] = [
     location: {
       latitude: 48.8566,
       longitude: 2.3522,
-      zoom: 8
+      zoom: 13
     }
   }
 ];

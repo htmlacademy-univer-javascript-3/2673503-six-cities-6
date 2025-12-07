@@ -1,13 +1,12 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {cities} from '@/mocks/cities.ts';
-import {offers} from '@/mocks/offers.ts';
-import {setCity, setOffers, setSelectedOffer, setSortOption} from '@/store/actions.ts';
-import {SortOption} from '@/constants/sort-option.ts';
-import {State} from '@/state/state.ts';
+import {setCity, setOffers, setSelectedOffer, setSortOption} from '@/store/action.ts';
+import {cities} from '@/constants/cities.ts';
+import {AppState} from '@/types/state.ts';
+import {SortOption} from '@/types/sort-option.ts';
 
-const initialState: State = {
+const initialState: AppState = {
   city: cities[5],
-  offers: offers.filter((offer) => offer.city.name === cities[5].name),
+  offers: undefined,
   sortOption: SortOption.Default,
   selectedOffer: undefined,
 };

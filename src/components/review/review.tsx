@@ -1,4 +1,4 @@
-﻿import {Comment} from '@/api/types.ts';
+﻿import {Comment} from '@/types/api.ts';
 
 interface ReviewProps {
   comment: Comment;

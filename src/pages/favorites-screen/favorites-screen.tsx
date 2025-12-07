@@ -1,16 +1,13 @@
 import Footer from '@/components/footer/footer.tsx';
 import Header from '@/components/header/header.tsx';
-import {Offer} from '@/api/types.ts';
 import {groupBy} from '@/utils/utils.ts';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
 import PlaceCard from '@/components/place-card/place-card.tsx';
+import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
 
-export interface FavoritesScreenProps {
-  offers: Offer[];
-}
-
-export default function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
+export default function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const groupedCityOffers = groupBy(offers, (offer) => offer.city.name, (offer) => offer);
 
   const cityOffers = Object.keys(groupedCityOffers).map((city) => (

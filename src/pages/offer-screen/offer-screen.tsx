@@ -1,16 +1,16 @@
 import {useParams} from 'react-router-dom';
 import NotFoundScreen from '@/pages/not-found-screen/not-found-screen.tsx';
 import Header from '@/components/header/header.tsx';
-import {offers} from '@/mocks/offers.ts';
-import OfferList from '@/components/offer-list/offer-list.tsx';
 import ReviewList from '@/components/review-list/review-list.tsx';
-import {comments} from '@/mocks/comments.ts';
 import Map from '@/components/map/map.tsx';
+import NearbyOfferList from '@/components/nearby-offer-list/nearby-offer-list.tsx';
+import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
 
 export default function OfferScreen(): JSX.Element {
-  const params = useParams();
-  const foundOffer = offers.find((offer) => offer.id === params.id);
-  const otherOffers = offers.filter((offer) => offer.id !== params.id);
+  const {id} = useParams();
+  const offers = useAppSelector((state) => state.offers);
+  const foundOffer = offers.find((offer) => offer.id === id);
+  const nearbyOffers = offers.filter((offer) => offer.id !== id && offer.city.name === foundOffer?.city.name);
 
   if (!foundOffer) {
     return <NotFoundScreen/>;
@@ -146,27 +146,14 @@ export default function OfferScreen(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <ReviewList comments={comments}/>
+              <ReviewList comments={[]}/>
             </div>
           </div>
           <section className="offer__map map">
-            <Map offers={otherOffers}/>
+            <Map location={foundOffer.city.location} offers={offers} selectedOffer={foundOffer}/>
           </section>
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">
-              Other places in the neighbourhood
-            </h2>
-            <div className="near-places__list places__list">
-              <OfferList offers={otherOffers}
-                page={'near-places'}
-                width={260}
-                height={200}
-              />
-            </div>
-          </section>
-        </div>
+        <NearbyOfferList nearbyOffers={nearbyOffers}/>
       </main>
     </div>);
 }
