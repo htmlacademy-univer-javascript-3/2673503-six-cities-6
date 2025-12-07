@@ -1,35 +1,36 @@
 import {useState} from 'react';
 import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
-import {setSortOption} from '@/store/actions.ts';
-import {SortOption} from '@/constants/sort-option.ts';
+import {setSortOption} from '@/store/action.ts';
 import {useAppDispatch} from '@/components/hooks/use-app-dispatch.tsx';
+import {SortOption} from '@/types/sort-option.ts';
 
 
 export default function SortOptions() {
-  const [isShow, setIsShow] = useState(false);
-  const currentOption = useAppSelector((state) => state.sortOption);
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const currentSortOption = useAppSelector((state) => state.sortOption);
 
   const handleSortOptionChoose = (sortOptions: SortOption) => {
     dispatch(setSortOption({sortOption: sortOptions}));
+    setIsOpen(false);
   };
 
   return (
-    <form className="places__sorting" action="#" method="get" onClick={() => setIsShow(!isShow)}>
+    <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
-      <span className="places__sorting-type" tabIndex={0}>
-        {currentOption}
+      <span className="places__sorting-type" tabIndex={0} onClick={() => setIsOpen(!isOpen)}>
+        {currentSortOption}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {isShow &&
+      {isOpen &&
         <ul className="places__options places__options--custom places__options--opened">
           {Object.values(SortOption).map((option) =>
             (
               <li
                 key={option as SortOption}
-                className={`places__option ${option === currentOption && 'places__option--active'}`}
+                className={`places__option ${option === currentSortOption && 'places__option--active'}`}
                 tabIndex={0}
                 onClick={() => handleSortOptionChoose(option as SortOption)}
               >{option}

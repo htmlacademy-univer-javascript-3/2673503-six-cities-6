@@ -1,4 +1,4 @@
-﻿export enum OfferType {
+export enum OfferType {
   Apartment = 'Apartment',
   Room = 'Room'
 }
@@ -16,6 +16,7 @@ export type Offer = {
   bedrooms: number;
   maxAdults: number;
   city: City;
+  location: Location;
 };
 
 export type Location = {

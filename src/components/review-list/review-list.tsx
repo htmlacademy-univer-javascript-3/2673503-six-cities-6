@@ -1,5 +1,5 @@
-﻿import {Comment} from '@/api/types.ts';
-import Review from '@/components/review/review.tsx';
+﻿import Review from '@/components/review/review.tsx';
+import {Comment} from '@/types/api.ts';
 
 interface ReviewListProps {
   comments: Comment[];

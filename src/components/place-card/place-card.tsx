@@ -1,6 +1,6 @@
-﻿import {Offer} from '@/api/types.ts';
-import {Link} from 'react-router-dom';
+﻿import {Link} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
+import {Offer} from '@/types/api.ts';
 
 export interface PlaceCardProps {
   offer: Offer;
