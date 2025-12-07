@@ -1,34 +1,36 @@
-﻿import {City, Offer} from '@/api/types.ts';
+﻿import {Offer} from '@/api/types.ts';
 import 'leaflet/dist/leaflet.css';
 import {Icon, layerGroup, Marker} from 'leaflet';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '@/constants/url-markers.ts';
 import {useEffect, useRef} from 'react';
 import useMap from '@/components/hooks/use-map.tsx';
+import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
 
 interface MapProps {
-  city: City;
   offers: Offer[];
-  selectedOffer: Offer | undefined;
 }
 
-const defaultCustomIcon = new Icon({
+const defaultOfferIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
   iconSize: [40, 40],
   iconAnchor: [20, 40]
 });
 
-const currentCustomIcon = new Icon({
+const selectedOfferIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
   iconSize: [40, 40],
   iconAnchor: [20, 40]
 });
 
-export default function Map(props: MapProps): JSX.Element {
-  const {city, offers, selectedOffer} = props;
+export default function Map({offers}: MapProps): JSX.Element {
+  const selectedOffer = useAppSelector((state) => state.selectedOffer);
+  const selectedCity = useAppSelector((state) => state.city);
+
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, selectedCity);
   useEffect(() => {
     if (map) {
+      map.setView([selectedCity.location.latitude, selectedCity.location.longitude], selectedCity.location.zoom);
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
         const marker = new Marker({
@@ -37,9 +39,9 @@ export default function Map(props: MapProps): JSX.Element {
         });
         marker
           .setIcon(
-            selectedOffer !== undefined && offer.title === selectedOffer.title
-              ? currentCustomIcon
-              : defaultCustomIcon
+            selectedOffer !== undefined && offer.id === selectedOffer.id
+              ? selectedOfferIcon
+              : defaultOfferIcon
           )
           .addTo(markerLayer);
       });
@@ -47,6 +49,6 @@ export default function Map(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, selectedOffer]);
+  }, [map, offers, selectedOffer, selectedCity]);
   return <div style={{height: '100%', width: '100%'}} ref={mapRef}></div>;
 }

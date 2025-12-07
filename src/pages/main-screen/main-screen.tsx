@@ -1,16 +1,22 @@
-﻿import {Offer} from '@/api/types.ts';
-import Header from '@/components/header/header.tsx';
+﻿import Header from '@/components/header/header.tsx';
 import OfferList from '@/components/offer-list/offer-list.tsx';
 import Map from '@/components/map/map.tsx';
-import {useState} from 'react';
 import CityList from '@/components/city-list/city-list.tsx';
 import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
 import {cities} from '@/mocks/cities.ts';
+import SortOptions from '@/components/sort-options/sort-options.tsx';
+import {GetOfferComparer} from '@/utils/utils.ts';
+import MainScreenEmpty from '@/pages/main-screen/main-screen-empty.tsx';
 
 export default function MainScreen(): JSX.Element {
-  const currentCity = useAppSelector((state) => state.city);
-  const currentOffers = useAppSelector((state) => state.offers);
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+  const city = useAppSelector((state) => state.city);
+  const sortOption = useAppSelector((state) => state.sortOption);
+  const offers = useAppSelector((state) => state.offers);
+
+  if (offers.length === 0) {
+    return <MainScreenEmpty/>;
+  }
+
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -23,44 +29,20 @@ export default function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                Popular
-                  <svg className="places__sorting-arrow" width={7} height={4}>
-                    <use xlinkHref="#icon-arrow-select"/>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li
-                    className="places__option places__option--active"
-                    tabIndex={0}
-                  >
-                    Popular
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: low to high
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: high to low
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Top rated first
-                  </li>
-                </ul>
-              </form>
+              <b className="places__found">{offers.length} places to stay in {city.name}</b>
+              <SortOptions/>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={currentOffers}
-                  selectedOffer={selectedOffer}
-                  setSelectedOffer={setSelectedOffer}
-                  page={'cities'} width={260} height={200}
+                <OfferList
+                  offers={offers.toSorted(GetOfferComparer(sortOption))}
+                  page={'cities'}
+                  width={260}
+                  height={200}
                 />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={currentCity} offers={currentOffers} selectedOffer={selectedOffer}/>
+                <Map offers={offers}/>
               </section>
             </div>
           </div>
