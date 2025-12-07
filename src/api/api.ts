@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig} from 'axios';
 import {AUTH_TOKEN_HEADER, getToken} from '@/api/token.ts';
-import {BACKEND_URL, REQUEST_TIMEOUT} from '@/constants/api-settings.ts';
+import {BACKEND_URL, REQUEST_TIMEOUT} from '@/constants/settings.ts';
 
 type ErrorMessage = {
   errorType: string;

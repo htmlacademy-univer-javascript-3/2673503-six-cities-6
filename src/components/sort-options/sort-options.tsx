@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import {useAppSelector} from '@/components/hooks/use-app-selector.tsx';
-import {setSortOption} from '@/store/action.ts';
-import {useAppDispatch} from '@/components/hooks/use-app-dispatch.tsx';
 import {SortOption} from '@/types/sort-option.ts';
+import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
+import {useAppSelector} from '@/hooks/use-app-selector.tsx';
+import {setSortOption} from '@/store/action.ts';
 
 
 export default function SortOptions() {

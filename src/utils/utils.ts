@@ -1,5 +1,6 @@
 ﻿import {SortOption} from '@/types/sort-option.ts';
-import {Offer} from '@/types/api.ts';
+import {Comment, Offer} from '@/types/api.ts';
+import {CommentInfo} from '@/types/comment-info.ts';
 
 export function groupBy<TSource, TValue>(
   source: TSource[],
@@ -53,4 +54,19 @@ export function getOfferCompare(sortOption: SortOption) {
     case SortOption.TopRatedFirst:
       return (a: Offer, b: Offer) => b.rating - a.rating;
   }
+}
+
+export function compareComments(a: Comment, b: Comment) {
+  return Date.parse(b.date) - Date.parse(a.date);
+}
+
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+  });
+}
+
+export function validateCommentInfo(comment: CommentInfo): boolean {
+  return comment.comment.length >= 50 && comment.comment.length <= 300 && comment.rating > 0;
 }

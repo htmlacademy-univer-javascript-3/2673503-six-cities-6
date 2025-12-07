@@ -1,4 +1,5 @@
 ﻿import {Comment} from '@/types/api.ts';
+import {formatDate} from '@/utils/utils.ts';
 
 interface ReviewProps {
   comment: Comment;
@@ -18,12 +19,12 @@ export default function Review({comment}: ReviewProps) {
             alt="Reviews avatar"
           />
         </div>
-        <span className="reviews__user-name">{comment.user.name.split(' ')[0]}</span>
+        <span className="reviews__user-name">{comment.user.name}</span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: `${comment.rating * 100 / 5}%`}}/>
+            <span style={{width: `${Math.round(comment.rating) * 100 / 5}%`}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -31,7 +32,7 @@ export default function Review({comment}: ReviewProps) {
           {comment.comment}
         </p>
         <time className="reviews__time" dateTime={comment.date}>
-          {date.toLocaleDateString()}
+          {formatDate(date)}
         </time>
       </div>
     </>);
