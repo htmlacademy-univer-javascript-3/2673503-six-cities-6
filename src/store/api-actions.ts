@@ -7,10 +7,24 @@ import {dropToken, saveToken} from '@/api/token.ts';
 import {AuthData} from '@/types/auth-data.ts';
 import {AuthorizationStatus} from '@/constants/auth-status.ts';
 import {CommentInfo} from '@/types/comment-info.ts';
-import {addComment, loadOffer, setIsLoading, setOfferNotFound} from '@/store/chosen-offer/chosen-offer.ts';
-import {loadOffers, setIsLoadingMainOffers} from '@/store/main-offers/main-offers.ts';
+import {
+  addComment, clearFavoriteOffersInChosenOffer,
+  loadOffer,
+  setIsLoading,
+  setOfferNotFound, switchFavoriteStatusInChosenOffer
+} from '@/store/chosen-offer/chosen-offer.ts';
+import {
+  clearFavoriteOffersInMainOffers,
+  loadOffers,
+  setIsLoadingMainOffers,
+  switchFavoriteStatusInMainOffers
+} from '@/store/main-offers/main-offers.ts';
 import {setAuthorizationStatus, setAvatarUrl, setEmail} from '@/store/app-user/app-user.ts';
-import {setFavoriteStatus, updateFavorites} from '@/store/favorite-offers/favorite-offers.ts';
+import {
+  setFavoriteOffersIsLoading,
+  setFavoriteStatus,
+  updateFavorites
+} from '@/store/favorite-offers/favorite-offers.ts';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -86,6 +100,8 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(clearFavoriteOffersInChosenOffer());
+    dispatch(clearFavoriteOffersInMainOffers());
     dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
   },
 );
@@ -109,6 +125,7 @@ export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
 }>(
   'favorites/fetchFavoriteOffers',
   async (_arg, {dispatch, extra: api}) => {
+    dispatch(setFavoriteOffersIsLoading());
     const {data: offers} = await api.get<Offer[]>(`${APIRoute.Favorite}`);
     dispatch(updateFavorites(offers));
   }
@@ -121,7 +138,9 @@ export const postSwitchFavoriteStatus = createAsyncThunk<void, Offer, {
 }>(
   'favorites/postFavoriteOfferStatus',
   async (offer, {dispatch, extra: api}) => {
-    const {data: updateOffer} = await api.post<Offer>(`${APIRoute.Favorite}/${offer.id}/${offer.isFavorite ? 0 : 1}`);
-    dispatch(setFavoriteStatus(updateOffer));
+    const {data: updatedOffer} = await api.post<Offer>(`${APIRoute.Favorite}/${offer.id}/${offer.isFavorite ? 0 : 1}`);
+    dispatch(setFavoriteStatus(updatedOffer));
+    dispatch(switchFavoriteStatusInChosenOffer(updatedOffer));
+    dispatch(switchFavoriteStatusInMainOffers(updatedOffer));
   }
 );

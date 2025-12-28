@@ -34,5 +34,6 @@ function CityList({cities}: CityListProps) {
     </section>);
 }
 
-const MemoizedCityList = memo(CityList, (prevProps, nextProps) => prevProps.cities.map((city) => city.name).join() === nextProps.cities.map((city) => city.name).join());
+const MemoizedCityList = memo(CityList, (prevProps, nextProps) =>
+  prevProps.cities.map((city) => city.name).join() === nextProps.cities.map((city) => city.name).join());
 export default MemoizedCityList;

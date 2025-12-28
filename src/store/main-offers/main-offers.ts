@@ -18,8 +18,24 @@ export const mainOffers = createSlice({
     },
     setIsLoadingMainOffers: (state) => {
       state.isLoading = true;
+    },
+    switchFavoriteStatusInMainOffers: (state, action: PayloadAction<Offer>) => {
+      const foundOffer = state.mainOffers.find((offer) => offer?.id === action.payload.id);
+      if (foundOffer) {
+        foundOffer.isFavorite = action.payload.isFavorite;
+      }
+    },
+    clearFavoriteOffersInMainOffers: (state) => {
+      state.mainOffers.forEach((offer) => {
+        offer.isFavorite = false;
+      });
     }
   },
 });
 
-export const {loadOffers, setIsLoadingMainOffers} = mainOffers.actions;
+export const {
+  loadOffers,
+  setIsLoadingMainOffers,
+  switchFavoriteStatusInMainOffers,
+  clearFavoriteOffersInMainOffers
+} = mainOffers.actions;

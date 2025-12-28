@@ -5,9 +5,7 @@ import Map from '@/components/map/map.tsx';
 import NearbyOfferList from '@/components/nearby-offer-list/nearby-offer-list.tsx';
 import {useEffect} from 'react';
 import {
-  fetchFavoriteOffersAction,
   fetchOfferAction,
-  fetchOffersAction,
   postSwitchFavoriteStatus
 } from '@/store/api-actions.ts';
 import Spinner from '@/components/spinner/spinner.tsx';
@@ -42,11 +40,7 @@ export default function OfferScreen(): JSX.Element {
       navigate(AppRoute.Login);
       return;
     }
-    dispatch(postSwitchFavoriteStatus(offer!)).then(() => {
-      dispatch(fetchOffersAction());
-      dispatch(fetchOfferAction({offerId: id!}));
-      dispatch(fetchFavoriteOffersAction());
-    });
+    dispatch(postSwitchFavoriteStatus(offer!));
   };
 
   if (notFound) {

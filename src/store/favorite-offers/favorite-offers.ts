@@ -17,9 +17,10 @@ export const favoriteOffers = createSlice({
       state.isLoading = false;
     },
     setFavoriteStatus: (state, action: PayloadAction<Offer>) => {
-      const offer = state.favoriteOffers.find((currentOffer) => currentOffer.id === action.payload.id);
-      if (offer) {
-        offer.isFavorite = action.payload.isFavorite;
+      if (!action.payload.isFavorite) {
+        state.favoriteOffers = state.favoriteOffers.filter((offer) => offer.id !== action.payload.id);
+      } else if (action.payload.isFavorite && !state.favoriteOffers.find((offer) => offer.id === action.payload.id)) {
+        state.favoriteOffers.push(action.payload);
       }
     },
     setFavoriteOffersIsLoading: (state) => {
@@ -28,4 +29,4 @@ export const favoriteOffers = createSlice({
   },
 });
 
-export const {updateFavorites, setFavoriteOffersIsLoading, setFavoriteStatus} = favoriteOffers.actions;
+export const {updateFavorites, setFavoriteStatus, setFavoriteOffersIsLoading} = favoriteOffers.actions;

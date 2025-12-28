@@ -5,9 +5,6 @@ import {capitalize} from '@/utils/utils.ts';
 import {memo} from 'react';
 import {AuthorizationStatus} from '@/constants/auth-status.ts';
 import {
-  fetchFavoriteOffersAction,
-  fetchOfferAction,
-  fetchOffersAction,
   postSwitchFavoriteStatus
 } from '@/store/api-actions.ts';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
@@ -32,11 +29,7 @@ function PlaceCard({offer, page, width, height}: PlaceCardProps): JSX.Element {
       navigate(AppRoute.Login);
       return;
     }
-    dispatch(postSwitchFavoriteStatus(offer)).then(() => {
-      dispatch(fetchOffersAction());
-      dispatch(fetchOfferAction({offerId: offer.id}));
-      dispatch(fetchFavoriteOffersAction());
-    });
+    dispatch(postSwitchFavoriteStatus(offer));
   };
 
   return (
@@ -95,5 +88,6 @@ function PlaceCard({offer, page, width, height}: PlaceCardProps): JSX.Element {
     </article>);
 }
 
-const MemoizedPlaceCard = memo(PlaceCard);
+const MemoizedPlaceCard = memo(PlaceCard, (prevProps, nextProps) =>
+  JSON.stringify(prevProps.offer) === JSON.stringify(nextProps.page));
 export default MemoizedPlaceCard;

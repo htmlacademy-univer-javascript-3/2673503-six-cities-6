@@ -12,8 +12,8 @@ function ReviewList({comments}: ReviewListProps) {
   return (
     <ul className="reviews__list">
       {comments
+        .toSorted(compareComments)
         .slice(0, MAX_REVIEWS_COUNT)
-        .sort(compareComments)
         .map((comment) => (
           <li className="reviews__item" key={comment.id}>
             <Review comment={comment}/>
@@ -22,5 +22,6 @@ function ReviewList({comments}: ReviewListProps) {
   );
 }
 
-const MemoizedReviewList = memo(ReviewList);
+const MemoizedReviewList = memo(ReviewList, (prevProps, nextProps) =>
+  prevProps.comments.map((comment) => comment.id).join() === nextProps.comments.map((comment) => (comment.id)).join());
 export default MemoizedReviewList;

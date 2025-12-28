@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {ChosenOffer} from '@/types/state.ts';
 import {NameSpace} from '@/constants/namespaces.ts';
 import {Comment, Offer} from '@/types/api.ts';
+import {MAX_NEARBY_OFFERS_COUNT} from '@/constants/settings.ts';
 
 const initialState: ChosenOffer = {
   offer: undefined,
@@ -21,7 +22,7 @@ export const chosenOffer = createSlice({
       comments: Comment[];
     }>) => {
       state.offer = action.payload.offer;
-      state.nearbyOffers = action.payload.nearbyOffers;
+      state.nearbyOffers = action.payload.nearbyOffers.slice(0, MAX_NEARBY_OFFERS_COUNT);
       state.comments = action.payload.comments;
       state.notFound = false;
       state.isLoading = false;
@@ -37,12 +38,27 @@ export const chosenOffer = createSlice({
     addComment: (state: ChosenOffer, action: PayloadAction<Comment>) => {
       state.comments.push(action.payload);
     },
-    clearFavorite: (state: ChosenOffer) => {
-      if (state.offer !== undefined) {
-        state.offer.isFavorite = false;
+    clearFavoriteOffersInChosenOffer: (state: ChosenOffer) => {
+      const offers = state.nearbyOffers.concat(state.offer as Offer);
+      offers.filter((offer) => offer).forEach((offer) => {
+        offer.isFavorite = false;
+      });
+    },
+    switchFavoriteStatusInChosenOffer(state, action: PayloadAction<Offer>) {
+      const offers = state.nearbyOffers.concat(state.offer as Offer);
+      const foundOffer = offers.find((offer) => offer?.id === action.payload.id);
+      if (foundOffer) {
+        foundOffer.isFavorite = action.payload.isFavorite;
       }
     }
   },
 });
 
-export const {loadOffer, addComment, setIsLoading, setOfferNotFound, clearFavorite} = chosenOffer.actions;
+export const {
+  loadOffer,
+  addComment,
+  setIsLoading,
+  setOfferNotFound,
+  clearFavoriteOffersInChosenOffer,
+  switchFavoriteStatusInChosenOffer
+} = chosenOffer.actions;

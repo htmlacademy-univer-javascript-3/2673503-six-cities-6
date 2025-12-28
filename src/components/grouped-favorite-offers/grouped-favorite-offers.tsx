@@ -28,5 +28,6 @@ function GroupedFavoriteOffers({offers}: GroupedFavoriteOffersProps) {
     </li>));
 }
 
-const MemoizedGroupedFavoriteOffers = memo(GroupedFavoriteOffers);
+const MemoizedGroupedFavoriteOffers = memo(GroupedFavoriteOffers, (prevProps, nextProps) =>
+  prevProps.offers.map((offer) => offer.id).join() === nextProps.offers.map((offer) => offer.id).join());
 export default MemoizedGroupedFavoriteOffers;

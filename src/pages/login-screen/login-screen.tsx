@@ -3,7 +3,7 @@ import {AuthorizationStatus} from '@/constants/auth-status.ts';
 import {Link, Navigate} from 'react-router-dom';
 import {AppRoute} from '@/constants/app-routes.ts';
 import {FormEvent, useRef, useState} from 'react';
-import {loginAction} from '@/store/api-actions.ts';
+import {fetchFavoriteOffersAction, fetchOffersAction, loginAction} from '@/store/api-actions.ts';
 import {validatePassword} from '@/utils/utils.ts';
 import {useAppSelector} from '@/hooks/use-app-selector.tsx';
 import {useAppDispatch} from '@/hooks/use-app-dispatch.tsx';
@@ -27,7 +27,10 @@ export default function LoginScreen(): JSX.Element {
         dispatch(loginAction({
           login: loginRef.current.value,
           password: passwordRef.current.value
-        }));
+        })).then(() => {
+          dispatch(fetchOffersAction());
+          dispatch(fetchFavoriteOffersAction());
+        });
       }
 
       return error;

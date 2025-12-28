@@ -24,5 +24,6 @@ function ReviewSection({comments}: ReviewSectionProps) {
   );
 }
 
-const MemoizedReviewSection = memo(ReviewSection);
+const MemoizedReviewSection = memo(ReviewSection, (prevProps, nextProps) =>
+  prevProps.comments.map((comment) => comment.id).join() === nextProps.comments.map((comment) => (comment.id)).join());
 export default MemoizedReviewSection;

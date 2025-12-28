@@ -16,5 +16,6 @@ function FavoriteOfferList({offers}: FavoriteOfferListProps) {
     </section>);
 }
 
-const MemoizedFavoriteOfferList = memo(FavoriteOfferList);
+const MemoizedFavoriteOfferList = memo(FavoriteOfferList, (prevProps, nextProps) =>
+  prevProps.offers.map((offer) => offer.id).join() === nextProps.offers.map((offer) => offer.id).join());
 export default MemoizedFavoriteOfferList;
